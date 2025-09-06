@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor de Imágenes - Custom Creations Florida</title>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    
+    <script src="https://cdn.jsdelivr.net/npm/super-resolution-js@0.1.0/dist/browser.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/imagetracerjs/imagetracer_v1.2.6.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@imgly/background-removal/dist/browser.js"></script>
+    
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --primary-color: #1877f2; --secondary-color: #42b72a; --action-color: #f5a623;
+            --background-color: #f0f2f5; --container-background: #ffffff; --text-color: #1c1e21;
+        }
+        body {
+            font-family: system-ui, sans-serif; background-color: var(--background-color); color: var(--text-color);
+            display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 1rem;
+        }
+        .container {
+            background-color: var(--container-background); padding: 1.5rem; border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); width: 100%; max-width: 900px; text-align: center;
+        }
+        .preview-container { display: flex; flex-direction: column; gap: 1rem; margin: 1.5rem 0; }
+        .preview-box {
+            flex: 1; border: 2px dashed #ccd0d5; border-radius: 8px; min-height: 250px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 0.5rem; background-color: #f7f8fa;
+        }
+        .preview-box h3 { font-size: 0.9rem; color: #606770; margin-bottom: 0.5rem; }
+        .preview-box img, .preview-box svg { max-width: 100%; max-height: 250px; object-fit: contain; }
+        .action-btn {
+            background-color: var(--primary-color); color: white; border: none; padding: 0.875rem 1.5rem;
+            border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; width: 100%;
+            transition: background-color 0.2s; margin-top: 1rem;
+        }
+        .action-btn:disabled { background-color: #a0a0a0; cursor: not-allowed; }
+        #download-link {
+            background-color: var(--secondary-color); color: white; text-decoration: none; display: none;
+            padding: 0.875rem 1.5rem; border-radius: 8px; margin-top: 1rem; font-weight: bold;
+        }
+        #status { margin-top: 1rem; font-weight: 500; color: #606770; min-height: 1.2em; }
+        @media (min-width: 768px) {
+            .container { padding: 2.5rem; }
+            .preview-container { flex-direction: row; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Editor de Imágenes</h1>
+        <div class="preview-container">
+            <div class="preview-box" id="original-preview"><h3>Original</h3><p>Sube una imagen</p></div>
+            <div class="preview-box" id="processed-preview"><h3>Resultado</h3><p>Aquí verás los cambios</p></div>
+        </div>
+        <div id="controls">
+            <input type="file" id="image-selector" accept="image/*" style="display: none;">
+            <button id="upload-btn" class="action-btn">Subir Imagen</button>
+            <button id="enhance-btn" class="action-btn" style="display: none; background-color: var(--action-color);">Mejorar Calidad</button>
+            <div id="final-actions" style="display: none; margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                <label><input type="checkbox" id="remove-bg-check"> ¿Quitar Fondo antes de Vectorizar?</label>
+                <button id="vectorize-btn" class="action-btn" style="background-color: var(--secondary-color);">Vectorizar</button>
+            </div>
+        </div>
+        <p id="status"></p>
+        <a id="download-link" href="#" download="resultado.svg">Descargar SVG</a>
+    </div>
+    <script type="module" src="app.js"></script>
+</body>
+</html>
